@@ -2,7 +2,8 @@ import axios from "axios";
 
 import {
     SET_DAILY_GOAL,
-    MOUNT_UNIT_OBJ
+    MOUNT_UNIT_OBJ,
+    ARCHIVE_CURRENT
 } from '../actions/types'
 
 var essential_french_JSON = require('../Data/essential_french.json')
@@ -14,7 +15,8 @@ const curriculum = {
 
 
 const initialState = {
-    daily_goal : 15
+    daily_goal : 15,
+    archived_obj : []
 }
 
 export default function (state = initialState, action) {
@@ -53,6 +55,21 @@ export default function (state = initialState, action) {
             };
  
         }
+
+        case ARCHIVE_CURRENT : {
+            console.log(action.payload)
+            console.log(ARCHIVE_CURRENT)
+            let current_obj = action.payload
+            console.log('current_obj')
+            console.log(current_obj)
+            return{
+                ...state,
+                // 放进去成数组
+                archived_obj : [...state.archived_obj,current_obj]
+            }
+        }
+
+        
         
 
         default:

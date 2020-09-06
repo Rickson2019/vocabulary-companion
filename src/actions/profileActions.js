@@ -3,13 +3,14 @@ import axios from "axios";
 import {
     SET_DAILY_GOAL,
     GET_DAILY_GOAL,
-    MOUNT_UNIT_OBJ
+    MOUNT_UNIT_OBJ,
+    ARCHIVE_CURRENT
 } from './types'
 
 
 
 
-// A temporary user's choice of being a renter/owner
+// 设置该日常
 export const setDailyGoal = (goal) => dispatch => {
     
     console.log(SET_DAILY_GOAL)
@@ -20,13 +21,23 @@ export const setDailyGoal = (goal) => dispatch => {
     })
 }
 
-
+// 绑定当前这个单元到store当中
 export const mountUnitObj = (unit) => dispatch => {
     console.log(MOUNT_UNIT_OBJ)
     console.log(unit)
     dispatch({
         type : MOUNT_UNIT_OBJ,
         payload : unit
+    })
+}
+
+// 存档当前的这个
+export const archiveCurrent = (current_obj) => dispatch => {
+    console.log(ARCHIVE_CURRENT)
+    console.log(current_obj)
+    dispatch({
+        type : ARCHIVE_CURRENT,
+        payload : current_obj
     })
 }
 
