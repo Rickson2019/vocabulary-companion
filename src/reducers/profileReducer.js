@@ -7,10 +7,11 @@ import {
 } from '../actions/types'
 
 var essential_french_JSON = require('../Data/essential_french.json')
-
+var german_demo_JSON = require('../Data/german_demo.json')
 
 const curriculum = {
     'Essential French': essential_french_JSON,
+    'German Demo': german_demo_JSON,
 }
 
 

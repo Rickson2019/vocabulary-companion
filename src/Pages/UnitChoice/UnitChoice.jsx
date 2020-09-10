@@ -6,8 +6,9 @@ import {mountUnitObj} from '../../actions/profileActions'
 
 
 var essential_french_JSON = require('../../Data/essential_french')
+var german_demo_JSON = require('../../Data/german_demo')
 
-var wordlist = [essential_french_JSON]
+var wordlist = [essential_french_JSON,german_demo_JSON]
 
 function UnitChoice(props) {
 

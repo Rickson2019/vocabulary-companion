@@ -6,7 +6,7 @@ import $ from 'jquery'
 // 这是为了连接到redux的状态管理器
 import { connect } from "react-redux";
 // redux当中的一个function，用于获取用户每日定的学习计划
-import { getDailyGoal,archiveCurrent } from '../../actions/profileActions'
+import { getDailyGoal, archiveCurrent } from '../../actions/profileActions'
 
 // Material UI 组件库
 import { Button } from '@material-ui/core'
@@ -23,6 +23,8 @@ function WordFlashCards(props) {
 
     // 已经学过的单词
     const [learned_word_list, set_learned] = useState([])
+
+    const [current_learned_word_list, set_current_learned] = useState([])
 
     const [words_to_learn_list, set_words_to_learn] = useState(props.mounted_unit_obj)
 
@@ -48,20 +50,20 @@ function WordFlashCards(props) {
         let words_to_learn_obj = words_to_learn_list
         console.log(words_to_learn_obj)
         delete words_to_learn_obj[mounted_flashcard.id]
-        
+
 
         $.when()
-        .then(()=>{
-            set_words_to_learn(words_to_learn_obj)
-        })
-        .then(()=>{
-            console.log(words_to_learn_list)
-        })
-        .then(()=>{
-            props.archiveCurrent(mounted_flashcard.id)
-        })
-        
-        
+            .then(() => {
+                set_words_to_learn(words_to_learn_obj)
+            })
+            .then(() => {
+                console.log(words_to_learn_list)
+            })
+            .then(() => {
+                props.archiveCurrent(mounted_flashcard.id)
+            })
+
+
     }
 
     // 跳过当前这张卡片
@@ -74,8 +76,15 @@ function WordFlashCards(props) {
     const handleNext = () => {
         console.log('in handleNext()')
 
-        
+
         mountNewFlashCard()
+
+        set_progress(progress_INT + 1)
+    }
+
+
+    const handlePrevious = () => {
+        console.log('in handlePrevious')
 
         set_progress(progress_INT + 1)
     }
@@ -87,8 +96,9 @@ function WordFlashCards(props) {
             .then(() => {
                 // 若这个单词在“已斩”当中未存在
                 // 那么就把它给加入“已斩”
-                if(mounted_flashcard && !learned_word_list.includes(mounted_flashcard)){
+                if (mounted_flashcard && !learned_word_list.includes(mounted_flashcard)) {
                     learned_word_list.push(mounted_flashcard)
+                    current_learned_word_list.push(mounted_flashcard)
                 }
                 removeFromToLearnList()
 
@@ -96,9 +106,9 @@ function WordFlashCards(props) {
             .then(() => {
                 // 设置为已会
                 set_learned(learned_word_list)
-                
+                set_current_learned(current_learned_word_list)
             })
-            .then(()=>{
+            .then(() => {
                 // 
                 console.log(learned_word_list)
                 // 斩的同时放新卡上去
@@ -107,10 +117,11 @@ function WordFlashCards(props) {
     }
 
     return (
-        <Fragment>  
+        <Fragment>
 
             <ProgressBar progress={progress_INT} total={props.daily_goal} />
             <Button variant='contained' onClick={skipCurrent}>Skip</Button>
+            <Button variant='contained' color='primary' onClick={handlePrevious}>Previous</Button>
             <Button variant='contained' color='primary' onClick={handleNext}>Next</Button>
             <Button variant='contained' color='primary' onClick={archiveCurrent}>Archive</Button>
 
@@ -118,7 +129,9 @@ function WordFlashCards(props) {
                 <div id='flash-card-word'>{mounted_flashcard.id}</div>
                 <div id='flash-card-english-meaning'>{mounted_flashcard.english_meaning}</div>
                 <div id='flash-card-pronounciation'>/{mounted_flashcard.pronounciation}/</div>
-                <img style={{ maxWidth: '60vw' }} src={`/images/essential_french/${mounted_flashcard.id}.jpg`} />
+                <div id='flash-card-gender'>gender: {mounted_flashcard.gender}</div>
+                <img style={{ maxWidth: '60vw' }} alt='mounted_flashcard' src={`/images/essential_french/${mounted_flashcard.id}.jpg`} />
+                <img style={{ maxWidth: '60vw' }} alt='english_meaning' src={`/images/german_demo/${mounted_flashcard.english_meaning}.jpg`} />
             </div>}
         </Fragment>
     )
@@ -135,4 +148,4 @@ function mapStateToProps(state, ownProps) {
 }
 
 // 
-export default connect(mapStateToProps, { getDailyGoal, archiveCurrent})((WordFlashCards));
+export default connect(mapStateToProps, { getDailyGoal, archiveCurrent })((WordFlashCards));

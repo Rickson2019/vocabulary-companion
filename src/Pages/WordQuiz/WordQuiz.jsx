@@ -29,7 +29,7 @@ export default function NoteReading(props) {
 
     const [groups, setGroups] = useState([])
 
-
+    // const [confusionChoices, setConfusionChoices] = useState('')
 
     const handleNext = () => {
 
@@ -96,6 +96,10 @@ export default function NoteReading(props) {
 
 
                 
+
+            </div>
+
+            <div>
 
             </div>
 

@@ -6,6 +6,7 @@ export default function Settings() {
 
     const [daily_goal, set_daily_goal] = useState(0)
 
+    // 切换用户的每日目标
     const changeDailyGoal = (goal) => {
         console.log(goal)
         set_daily_goal(goal)

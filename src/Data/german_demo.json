@@ -1,0 +1,40 @@
+{
+    "German Demo": {
+        "nicht": {
+            "id": "nicht",
+            "english_meaning": "not",
+            "chinese_meaning": "不",
+            "part_of_speech": null,
+            "gender": "m",
+            "pronounciation": "/nicht/",
+            "type": "French Frequency Noun Vocabulary"
+        },
+        "danken": {
+            "id": "danken",
+            "english_meaning": "thanks",
+            "chinese_meaning": "谢谢",
+            "part_of_speech": null,
+            "gender": "m",
+            "pronounciation": "/ad.ʒɛk.tif/",
+            "type": "French Frequency Noun Vocabulary"
+        },
+        "schön": {
+            "id": "schön",
+            "english_meaning": "nice",
+            "chinese_meaning": "好的",
+            "part_of_speech": null,
+            "gender": "m",
+            "pronounciation": "/schön/",
+            "type": "French Frequency Noun Vocabulary"
+        },
+        "Brot": {
+            "id": "Brot",
+            "english_meaning": "bread",
+            "chinese_meaning": "面包",
+            "part_of_speech": null,
+            "gender": "noun (das)",
+            "pronounciation": "/schön/",
+            "type": "French Frequency Noun Vocabulary"
+        }
+    }
+}
