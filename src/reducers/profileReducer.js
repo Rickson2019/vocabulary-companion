@@ -1,3 +1,4 @@
+// 用于http协议下提交，抓取的库
 import axios from "axios";
 
 import {
@@ -6,6 +7,7 @@ import {
     ARCHIVE_CURRENT
 } from '../actions/types'
 
+// 导入单元
 var essential_french_JSON = require('../Data/essential_french.json')
 var german_demo_JSON = require('../Data/german_demo.json')
 
@@ -24,7 +26,7 @@ export default function (state = initialState, action) {
 
     switch (action.type) {
 
-
+        // 负责将每日任务提交到服务器
         case SET_DAILY_GOAL : {
             console.log(action.payload)
             console.log(SET_DAILY_GOAL)
@@ -41,20 +43,22 @@ export default function (state = initialState, action) {
             };
         }
 
+        // 负责加载目标词单
         case MOUNT_UNIT_OBJ : {
             console.log(action.payload)
             console.log(MOUNT_UNIT_OBJ)
 
             let unit = action.payload
-            // let unit_obj = 
+            
             console.log(`unit： ${unit}`)
             console.log(curriculum[unit][unit])
+            // 纯一级Object（一个key对应一个value的元组）
             let mounted_unit_obj = curriculum[unit][unit]
             return { 
                 ...state,
                 mounted_unit_obj: mounted_unit_obj
             };
- 
+            
         }
 
         case ARCHIVE_CURRENT : {

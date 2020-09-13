@@ -22,17 +22,28 @@ export const setDailyGoal = (goal) => dispatch => {
     })
 }
 
-// 绑定当前这个单元到store当中
-export const mountUnitObj = (unit) => dispatch => {
+// 绑定当前这个单元的JSON Obj到store当中
+export const mountUnitObj = (unit_obj) => dispatch => {
     console.log(MOUNT_UNIT_OBJ)
-    console.log(unit)
+    console.log(unit_obj)
     dispatch({
         type : MOUNT_UNIT_OBJ,
-        payload : unit
+        payload : unit_obj
     })
 }
 
-// 存档当前的这个
+// 把这个单元的名字传入store
+export const mountUnitName = (unit_name) => dispatch => {
+    console.log(MOUNT_UNIT_OBJ)
+    console.log(unit_name)
+    dispatch({
+        type : MOUNT_UNIT_NAME,
+        payload : unit_name
+    })
+}
+
+
+// 存档当前的这个Obj
 export const archiveCurrent = (current_obj) => dispatch => {
     console.log(ARCHIVE_CURRENT)
     console.log(current_obj)
@@ -42,7 +53,7 @@ export const archiveCurrent = (current_obj) => dispatch => {
     })
 }
 
-// A temporary user's choice of being a renter/owner
+// 每日任务的Config
 export const getDailyGoal = (user_email) => dispatch => {
       
     return axios.get(`${process.env.REACT_APP_EXPRESS_ENDPOINT}/${user_email}`)
@@ -56,23 +67,3 @@ export const getDailyGoal = (user_email) => dispatch => {
        })
    });
 }
-
-
-// export const fetchHomeOwnerMapStatus = (user_email) => dispatch => {
-//     console.log('fetchHomeOwnerMapStatus')
-//     console.log('user_email')
-//     console.log(user_email)
-
-//         return axios.get(`${process.env.REACT_APP_EXPRESS_ENDPOINT}/HomeOwnerMapSteps/${user_email}`)
-//          .then(({ data }) => {
-//             console.log(data)
-//             dispatch({
-//                 type : FETCH_HOME_OWNER_MAP_STATUS,
-//                 payload: {
-//                     home_owner_map_config_step : data,
-//                 }
-//             })
-//         });
-// }
-
-

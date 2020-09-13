@@ -2,7 +2,10 @@ import React, { useEffect, useState, Fragment } from 'react'
 import { Button } from '@material-ui/core'
 import { Redirect } from 'react-router-dom'
 import { connect } from "react-redux";
+
+// 传本地JSON文件
 import {mountUnitObj} from '../../actions/profileActions'
+// 
 
 
 var essential_french_JSON = require('../../Data/essential_french')
@@ -17,9 +20,14 @@ function UnitChoice(props) {
     }, [wordlist])
 
 
+    // 选择单元
     const [mountedUnit, setMountedUnit] = useState(null)
 
+    // 开始学习（Redirect）
     const [startLearningBool, setStartLearning] = useState(false)
+
+    // 切换学习模式
+    const [studyMode, setStudyMode] = useState(false)
 
     const chooseUnit = (unit) => {
         setMountedUnit(unit)
@@ -33,18 +41,6 @@ function UnitChoice(props) {
         
 
     }
-    // return (
-    //     <div>
-    //         {wordlist.map((item,idx)=>(
-    //             <div>
-    //                 {Object.keys(item).map((item,idx)=>(
-    //                     <div>{item}</div>
-    //                 ))}
-    //             </div>
-    //         ))}
-    //     </div>
-    // )
-
 
     return (
         <Fragment>
@@ -57,7 +53,7 @@ function UnitChoice(props) {
                 <div>Want to start learning now?</div>
                 <Button variant='contained' color='primary' onClick={startLearning}>Yes</Button>
                 <Button variant='contained' color='secondary' onClick={() => setMountedUnit(null)}>No</Button>
-
+                
             </div>}
 
             {/* {startLearningBool && <Redirect to='/word-quiz' />} */}
@@ -66,4 +62,5 @@ function UnitChoice(props) {
     )
 }
 
+// 
 export default connect(null, {mountUnitObj})((UnitChoice));

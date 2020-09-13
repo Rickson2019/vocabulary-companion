@@ -1,12 +1,13 @@
 import React, { useEffect, useState, Fragment } from 'react'
 // import { Score } from 'react-vexflow'
+import {connect} from 'react-redux'
 import $ from 'jquery'
 
 import { Button } from '@material-ui/core'
 
 
 
-export default function NoteReading(props) {
+ function NoteReading(props) {
 
 
     // 单元
@@ -24,10 +25,9 @@ export default function NoteReading(props) {
     // 判断答案正误
     const [answerCheck, setAnswerCheck] = useState('Choose an answer')
 
-    // 
+    // 可选项（干扰项+正确的选项）
     const [answerChoices, setAnswerChoices] = useState(['C', 'D', 'E', 'F', 'G', 'A', 'B'])
 
-    const [groups, setGroups] = useState([])
 
     // const [confusionChoices, setConfusionChoices] = useState('')
 
@@ -108,3 +108,17 @@ export default function NoteReading(props) {
         </Fragment>
     )
 }
+
+
+function mapStateToProps(state, ownProps) {
+    console.log('props')
+    console.log(ownProps)
+
+    return {
+        daily_goal: state.profile.daily_goal,
+        mounted_unit_obj: state.profile.mounted_unit_obj
+    }
+
+}
+
+export default connect(mapStateToProps, {})((NoteReading));

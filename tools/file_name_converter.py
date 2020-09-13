@@ -6,10 +6,13 @@ import os
 import shutil
 import json
 
+list = []
+
 
 class Converter:
+
     def __init__(self):
-        file_content = open('../public/images/essential_french/english/essential_french.json', 'r',
+        file_content = open('../src/Data/essential_french.json', 'r',
                             encoding='utf-8').read()  # 一次性读取文件全部内容
         # 删去隐藏字符，要不然会报错
         # 参考资料：https://www.cnblogs.com/hankleo/p/10511523.html
@@ -33,11 +36,16 @@ class Converter:
                          if self.dictionary[word]['english_meaning'] else word.lower()) +  # 如果这个单词的英文是None就用原文
                         '.' + extension)  # 文件扩展名
                 except KeyError:  # 找不到这个单词
-                    continue  # 啥也不做
+                    print(word)
+                    list.append(word.lower())
+
                 # 复制文件
                 shutil.copyfile(source_file_path, target_file_path)
+
+    print(list)
 
 
 if __name__ == '__main__':
     converter = Converter()
     converter.convert()
+    print(list)
