@@ -71,7 +71,7 @@ class Converter:
             # 匹配过去式完成时什么的（顾问说的）
             # 这个东西不是例句，所以要丢弃，否则会导致后面的英文和德文例句顺序颠倒
             # 但是leidtun这个单词还有特殊的东西，不过只有它一个有问题，可以手动处理
-            if re.match('[A-Za-zÄäÖöẞßÜü, ]+, hat [A-Za-zÄäÖöẞßÜü, ]', examples[0]):
+            if re.match('[A-Za-zÄäÖöẞßÜü, ]+, hat [A-Za-zÄäÖöẞßÜü, ]+', examples[0]):
                 examples = examples[1:]  # 截取例句数组
             # 遍历例句
             for i in range(len(examples)):
