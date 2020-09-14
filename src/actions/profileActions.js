@@ -1,11 +1,12 @@
 import axios from "axios";
 
-// 
+
 import {
     SET_DAILY_GOAL,
     GET_DAILY_GOAL,
     MOUNT_UNIT_OBJ,
-    ARCHIVE_CURRENT
+    ARCHIVE_CURRENT,
+    MOUNT_UNIT_NAME
 } from './types'
 
 
@@ -13,12 +14,12 @@ import {
 
 // 设置该日常
 export const setDailyGoal = (goal) => dispatch => {
-    
+
     console.log(SET_DAILY_GOAL)
     console.log(`Goal' ${goal} Minutes`)
     dispatch({
-        type : SET_DAILY_GOAL,
-        payload : goal
+        type: SET_DAILY_GOAL,
+        payload: goal
     })
 }
 
@@ -27,18 +28,18 @@ export const mountUnitObj = (unit_obj) => dispatch => {
     console.log(MOUNT_UNIT_OBJ)
     console.log(unit_obj)
     dispatch({
-        type : MOUNT_UNIT_OBJ,
-        payload : unit_obj
+        type: MOUNT_UNIT_OBJ,
+        payload: unit_obj
     })
 }
 
 // 把这个单元的名字传入store
 export const mountUnitName = (unit_name) => dispatch => {
-    console.log(MOUNT_UNIT_OBJ)
+    console.log(MOUNT_UNIT_NAME)
     console.log(unit_name)
     dispatch({
-        type : MOUNT_UNIT_NAME,
-        payload : unit_name
+        type: MOUNT_UNIT_NAME,
+        payload: unit_name
     })
 }
 
@@ -48,10 +49,11 @@ export const archiveCurrent = (current_obj) => dispatch => {
     console.log(ARCHIVE_CURRENT)
     console.log(current_obj)
     dispatch({
-        type : ARCHIVE_CURRENT,
-        payload : current_obj
+        type: ARCHIVE_CURRENT,
+        payload: current_obj
     })
 }
+
 
 // 每日任务的Config
 export const getDailyGoal = (user_email) => dispatch => {
@@ -67,3 +69,16 @@ export const getDailyGoal = (user_email) => dispatch => {
        })
    });
 }
+
+
+// // 每日任务的Config
+// export const getDailyGoal = ({word_obj,word_id}) => dispatch => {
+
+//     dispatch({
+//         type: GET_DAILY_GOAL,
+//         payload: {
+//             word_obj : word_obj,
+//             word_id : word_id
+//         }
+//     })
+// }

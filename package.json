@@ -11,6 +11,7 @@
     "axios": "^0.20.0",
     "jquery": "^3.5.1",
     "material-ui-search-bar": "^1.0.0",
+    "mongodb": "^3.6.2",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
     "react-live-route": "^3.1.6",

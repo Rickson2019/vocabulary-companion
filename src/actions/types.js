@@ -10,7 +10,7 @@ export const ARCHIVE_CURRENT = 'ARCHIVE_CURRENT'
 
 // Admin
 export const UPDATE_WORD_INFO = 'UPDATE_WORD_INFO'
-
+export const MOUNT_UNIT_NAME = 'MOUNT_UNIT_NAME'
 
  
 

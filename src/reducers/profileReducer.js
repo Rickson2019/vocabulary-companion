@@ -19,7 +19,8 @@ const curriculum = {
 
 const initialState = {
     daily_goal : 15,
-    archived_obj : []
+    archived_obj : [],
+    mounted_unit_name : null
 }
 
 export default function (state = initialState, action) {
@@ -31,7 +32,7 @@ export default function (state = initialState, action) {
             console.log(action.payload)
             console.log(SET_DAILY_GOAL)
 
-            axios.post(`${process.env.REACT_APP_EXPRESS_ENDPOINT}/HomeOwnerMapSteps`,
+            axios.post(`${process.env.REACT_APP_EXPRESS_ENDPOINT}/upDateDailyGoal`,
             {user_email : action.payload.user_email,
              daily_goal : action.payload.daily_goal
             })
@@ -48,19 +49,22 @@ export default function (state = initialState, action) {
             console.log(action.payload)
             console.log(MOUNT_UNIT_OBJ)
 
-            let unit = action.payload
+            let unit_name = action.payload
             
-            console.log(`unit： ${unit}`)
-            console.log(curriculum[unit][unit])
+            console.log(`mounted_unit_name: ${unit_name}`)
+            console.log(curriculum[unit_name][unit_name])
             // 纯一级Object（一个key对应一个value的元组）
-            let mounted_unit_obj = curriculum[unit][unit]
+            let mounted_unit_obj = curriculum[unit_name][unit_name]
             return { 
                 ...state,
-                mounted_unit_obj: mounted_unit_obj
+                mounted_unit_obj : mounted_unit_obj,
+                // 找出为什么是个数组
+                // console.log 出来的是string
+                mounted_unit_name : unit_name[0]
             };
             
         }
-
+        
         case ARCHIVE_CURRENT : {
             console.log(action.payload)
             console.log(ARCHIVE_CURRENT)
