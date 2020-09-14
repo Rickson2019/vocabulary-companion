@@ -39,7 +39,7 @@ class Converter:
             plural = None
             if arr[Converter.ARTICLE_INDEX] in Converter.ARTICLES or \
                     arr[Converter.ARTICLE_INDEX] in Converter.SINGULAR:
-                example_start = Converter.ARTICLE_INDEX
+                example_start = Converter.ARTICLE_INDEX + 1
                 curr_itm = arr[Converter.ARTICLE_INDEX]
 
                 # 第2号位置也可能有 S.G.
@@ -48,9 +48,10 @@ class Converter:
                 else:  # 不是s.g.那就是定冠词了
                     article = curr_itm
                     gender = Converter.GENDER_MAPPING[curr_itm]
-            # 处理带横杠的（3号位）
-            if '-' in arr[Converter.SINGULAR_INDEX] or '(' in arr[Converter.SINGULAR_INDEX]:
-                example_start = Converter.SINGULAR_INDEX
+            # 处理带横杠的（3号位）（例句中也可能有横杠，用正则表达式筛选）
+            if re.match('-[a-z]*', arr[Converter.SINGULAR_INDEX]) or \
+                    arr[Converter.SINGULAR_INDEX] in Converter.SINGULAR:
+                example_start = Converter.SINGULAR_INDEX + 1
 
             # 单个词汇对象
             item = {
@@ -67,9 +68,14 @@ class Converter:
 
             # 处理例句
             examples = arr[example_start:Converter.LINE_INDEX]  # 截取例句数组
+            # 匹配过去式完成时什么的（顾问说的）
+            # 这个东西不是例句，所以要丢弃，否则会导致后面的英文和德文例句顺序颠倒
+            # 但是leidtun这个单词还有特殊的东西，不过只有它一个有问题，可以手动处理
+            if re.match('[A-Za-zÄäÖöẞßÜü, ]+, hat [A-Za-zÄäÖöẞßÜü, ]', examples[0]):
+                examples = examples[1:]  # 截取例句数组
             # 遍历例句
             for i in range(len(examples)):
-                if i % 2 == Converter.WORD_INDEX:  # 偶数句为德语
+                if i % 2 == 0:  # 偶数句为德语
                     item['language_example_sentence_' + str(i // 2 + 1)] = examples[i]
                 else:  # 奇数句为英语
                     item['english_example_sentence_' + str(i // 2 + 1)] = examples[i]
