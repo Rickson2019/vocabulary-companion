@@ -4,8 +4,7 @@ import { Redirect } from 'react-router-dom'
 import { connect } from "react-redux";
 
 // 传本地JSON文件
-import {mountUnitObj} from '../../actions/profileActions'
-// 
+import {mountUnitObjLocal} from '../../actions/profileActions'
 
 
 var essential_french_JSON = require('../../Data/essential_french')
@@ -29,10 +28,15 @@ function UnitChoice(props) {
     // 切换学习模式
     const [studyMode, setStudyMode] = useState(false)
 
-    const chooseUnit = (unit) => {
-        setMountedUnit(unit)
-        console.log(unit)
-        props.mountUnitObj(unit)
+    const chooseUnit = (unit_name) => {
+
+        setMountedUnit(unit_name)
+        console.log(unit_name)
+
+        if(wordlist[unit_name])
+            console.log(wordlist[unit_name])
+            
+        props.mountUnitObjLocal(unit_name)
     }
 
     const startLearning = () => {
@@ -62,5 +66,5 @@ function UnitChoice(props) {
     )
 }
 
-// 
-export default connect(null, {mountUnitObj})((UnitChoice));
+// connects to redux store 
+export default connect(null, {mountUnitObjLocal})((UnitChoice));
