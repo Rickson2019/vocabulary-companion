@@ -4,7 +4,7 @@ import axios from "axios";
 import {
     SET_DAILY_GOAL,
     GET_DAILY_GOAL,
-    MOUNT_UNIT_OBJ,
+    MOUNT_UNIT_OBJ_LOCAL,
     ARCHIVE_CURRENT,
     MOUNT_UNIT_NAME
 } from './types'
@@ -24,11 +24,11 @@ export const setDailyGoal = (goal) => dispatch => {
 }
 
 // 绑定当前这个单元的JSON Obj到store当中
-export const mountUnitObj = (unit_obj) => dispatch => {
-    console.log(MOUNT_UNIT_OBJ)
+export const mountUnitObjLocal = (unit_obj) => dispatch => {
+    console.log(MOUNT_UNIT_OBJ_LOCAL)
     console.log(unit_obj)
     dispatch({
-        type: MOUNT_UNIT_OBJ,
+        type: MOUNT_UNIT_OBJ_LOCAL,
         payload: unit_obj
     })
 }

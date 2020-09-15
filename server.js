@@ -81,7 +81,7 @@ app.post('/update_word_info_by_wordname', (req, res) => {
 })
 
 // 查找整个数据库的所有内容
-app.get('/return_all_the_unit_name', (req, res) => {
+app.get('/return_all_the_unit_names', (req, res) => {
     MongoClient.connect(MONGODB_CONNECTION_STRING,
         {}
         , function (err, db) {
@@ -132,6 +132,12 @@ app.get('/test', (req, res) => {
                     console.log(doc)
                 })
         })
+})
+
+app.post('/update_word_information_by_word_id', (req, res) => {
+    console.log("update_word_information_by_word_id")
+    console.log(req.body)
+    
 })
 
 

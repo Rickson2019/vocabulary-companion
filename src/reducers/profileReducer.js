@@ -3,7 +3,7 @@ import axios from "axios";
 
 import {
     SET_DAILY_GOAL,
-    MOUNT_UNIT_OBJ,
+    MOUNT_UNIT_OBJ_LOCAL,
     ARCHIVE_CURRENT
 } from '../actions/types'
 
@@ -45,9 +45,9 @@ export default function (state = initialState, action) {
         }
 
         // 负责加载目标词单
-        case MOUNT_UNIT_OBJ : {
+        case MOUNT_UNIT_OBJ_LOCAL : {
             console.log(action.payload)
-            console.log(MOUNT_UNIT_OBJ)
+            console.log(MOUNT_UNIT_OBJ_LOCAL)
 
             let unit_name = action.payload
             
