@@ -228,14 +228,14 @@ function Admin() {
         set_english_example_sentence_1_text(mounted_unit_obj[item_index].english_example_sentence_1)
         set_language_example_sentence_1_text(mounted_unit_obj[item_index].language_example_sentence_1)
 
- 
+
 
         set_english_example_sentence_2_text(mounted_unit_obj[item_index].english_example_sentence_2)
 
 
         set_language_example_sentence_2_text(mounted_unit_obj[item_index].language_example_sentence_2)
 
-        
+
         console.log(mounted_unit_obj[item_index].language_example_sentence_2)
         console.log(language_example_sentence_2_text)
         console.log(document.getElementById('language_example_sentence_2').value)
@@ -249,6 +249,29 @@ function Admin() {
     const handleLast = () => {
         console.log('handleLast')
         set_item_index(item_index - 1)
+
+        set_word_id_text(mounted_unit_obj[item_index].id)
+        set_english_meaning_text(mounted_unit_obj[item_index].english_meaning)
+        set_chinese_meaning_text(mounted_unit_obj[item_index].chinese_meaning)
+
+        set_english_example_sentence_1_text(mounted_unit_obj[item_index].english_example_sentence_1)
+        set_language_example_sentence_1_text(mounted_unit_obj[item_index].language_example_sentence_1)
+
+
+
+        set_english_example_sentence_2_text(mounted_unit_obj[item_index].english_example_sentence_2)
+
+
+        set_language_example_sentence_2_text(mounted_unit_obj[item_index].language_example_sentence_2)
+
+
+        console.log(mounted_unit_obj[item_index].language_example_sentence_2)
+        console.log(language_example_sentence_2_text)
+        console.log(document.getElementById('language_example_sentence_2').value)
+
+
+        set_english_example_sentence_3_text(mounted_unit_obj[item_index].english_example_sentence_3)
+        set_language_example_sentence_3_text(mounted_unit_obj[item_index].language_example_sentence_3)
     }
 
 
@@ -387,11 +410,11 @@ function Admin() {
                     ))} */}
 
                     <Fragment>
-                        <p>{mounted_unit_obj[item_index].id}</p>
+                        {/* <p>{mounted_unit_obj[item_index].id}</p> */}
                         <TextField defaultValue='word' id='word_id_TextField' className={classes.wordId} label={'Word ID'} value={word_id_text} onChange={(e) => set_word_id_text(e.target.value)} />
                         <Divider />
 
-                        <TextField defaultValue='en' id='english_meaning_TextField' className={classes.enMeaning} label={'English Meaning'}  value={english_meaning_text} onChange={(e) => set_english_meaning_text(e.target.value)}/>
+                        <TextField defaultValue='en' id='english_meaning_TextField' className={classes.enMeaning} label={'English Meaning'} value={english_meaning_text} onChange={(e) => set_english_meaning_text(e.target.value)} />
                         <Divider />
 
                         <TextField defaultValue='cn' id='chinese_meaning_TextField' className={classes.cnMeaning} label={'Chinese Meaning'} value={chinese_meaning_text} onChange={(e) => set_chinese_meaning_text(e.target.value)} />
@@ -403,13 +426,13 @@ function Admin() {
                         <TextField defaultValue='stz' id='language_example_sentence_1' className={classes.langStn} label={'language_example_sentence_1'} value={language_example_sentence_1_text} onChange={(e) => set_language_example_sentence_1_text(e.target.value)} />
                         <Divider />
 
-                        <TextField defaultValue='stz' id='english_example_sentence_2' className={classes.engStn} label={'english_example_sentence_2'} value={english_example_sentence_2_text} onChange={(e) => set_english_example_sentence_2_text(e.target.value)}/>
+                        <TextField defaultValue='stz' id='english_example_sentence_2' className={classes.engStn} label={'english_example_sentence_2'} value={english_example_sentence_2_text} onChange={(e) => set_english_example_sentence_2_text(e.target.value)} />
                         <Divider />
 
-                        <TextField defaultValue='stz' id='language_example_sentence_2' className={classes.langStn} label={'language_example_sentence_2'} value={language_example_sentence_2_text} onChange={(e) => set_language_example_sentence_2_text(e.target.value)}/>
+                        <TextField defaultValue='stz' id='language_example_sentence_2' className={classes.langStn} label={'language_example_sentence_2'} value={language_example_sentence_2_text} onChange={(e) => set_language_example_sentence_2_text(e.target.value)} />
                         <Divider />
 
-                        <TextField defaultValue='stz' id='english_example_sentence_3' className={classes.engStn} label={'english_example_sentence_3'} value={english_example_sentence_3_text} onChange={(e) => set_english_example_sentence_3_text(e.target.value)}/>
+                        <TextField defaultValue='stz' id='english_example_sentence_3' className={classes.engStn} label={'english_example_sentence_3'} value={english_example_sentence_3_text} onChange={(e) => set_english_example_sentence_3_text(e.target.value)} />
                         <Divider />
 
                         <TextField defaultValue={undefined} id='language_example_sentence_3' className={classes.langStn} label={'language_example_sentence_3'} onChange={(e) => set_language_example_sentence_3_text(e)} value={language_example_sentence_3_text} />

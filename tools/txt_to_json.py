@@ -34,9 +34,9 @@ class Converter:
             example_start = Converter.ARTICLE_INDEX  # 例句开始索引位置（从定冠词位置开始才有可能是例句）
 
             # 处理定冠词, gender, 单复数（2号位）
-            article = None
-            gender = None
-            plural = None
+            article = ""
+            gender = ""
+            plural = ""
             if arr[Converter.ARTICLE_INDEX] in Converter.ARTICLES or \
                     arr[Converter.ARTICLE_INDEX] in Converter.SINGULAR:
                 example_start = Converter.ARTICLE_INDEX + 1
@@ -59,9 +59,9 @@ class Converter:
                 'english_meaning': arr[Converter.ENGLISH_WORD_INDEX],  # 英语单词
                 'chinese_meaning': '',  # 中文意思
                 'index': int(arr[Converter.LINE_INDEX]),  # 行号
-                'part_of_speech': None,
+                'part_of_speech': "",
                 'gender': gender,
-                'pronunciation': None,
+                'pronunciation': "",
                 'article': article,
                 'plural': plural,
             }
@@ -74,7 +74,7 @@ class Converter:
             if re.match('[A-Za-zÄäÖöẞßÜü, ]+, hat [A-Za-zÄäÖöẞßÜü, ]+', examples[0]):
                 examples = examples[1:]  # 截取例句数组
             for i in range(6 - len(examples)):  # 补足到3组例句
-                examples.append(None)  # 没有例句的位置用None填充
+                examples.append("")  # 没有例句的位置用None填充
             # 遍历例句
             for i in range(len(examples)):
                 if i % 2 == 0:  # 偶数句为德语
