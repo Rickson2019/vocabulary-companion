@@ -73,6 +73,8 @@ class Converter:
             # 但是leidtun这个单词还有特殊的东西，不过只有它一个有问题，可以手动处理
             if re.match('[A-Za-zÄäÖöẞßÜü, ]+, hat [A-Za-zÄäÖöẞßÜü, ]+', examples[0]):
                 examples = examples[1:]  # 截取例句数组
+            for i in range(6 - len(examples)):  # 补足到3组例句
+                examples.append(None)  # 没有例句的位置用None填充
             # 遍历例句
             for i in range(len(examples)):
                 if i % 2 == 0:  # 偶数句为德语
