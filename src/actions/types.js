@@ -11,6 +11,12 @@ export const MOUNT_UNIT_OBJ_CLOUD = 'MOUNT_UNIT_OBJ_CLOUD'
 
 export const ARCHIVE_CURRENT = 'ARCHIVE_CURRENT'
 
+// 从云端获取学习记录
+export const FETCH_USER_STUDY_RECORD = 'FETCH_USER_STUDY_RECORD'
+// 将学习记录更新到云端
+export const UPDATE_USER_STUDY_RECORD = 'UPDATE_USER_STUDY_RECORD'
+
+
 
 // Admin Page Related
 export const UPDATE_WORD_INFO = 'UPDATE_WORD_INFO'

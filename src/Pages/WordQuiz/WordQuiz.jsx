@@ -1,14 +1,22 @@
 import React, { useEffect, useState, Fragment } from 'react'
 // import { Score } from 'react-vexflow'
 import {connect} from 'react-redux'
+import {fetchUserStudyRecord} from '../../actions/profileActions'
+
 import $ from 'jquery'
 
 import { Button } from '@material-ui/core'
 
+import {useAuth0} from '@auth0/auth0-react'
 
+ function NoteReading({mounted_unit_obj , fetchUserStudyRecord}) {
+    const { user, isAuthenticated, isLoading } = useAuth0();
 
- function NoteReading(props) {
-
+    useEffect(() => {
+        console.log('useEffect')
+        console.log(`user.email: ${user.email}`)
+        fetchUserStudyRecord(user.email)
+    }, [user])
 
     // 单元
     const [chosenUnit, setChosenUnit] = useState(null)
@@ -17,16 +25,18 @@ import { Button } from '@material-ui/core'
     const [startedBool, setStarted] = useState(false)
 
     // 当前加载的问题
-    const [mountedQuestion, mountQuestion] = useState('')
+    const [learned,setLearned] = useState([]);
+    const [toStudy,setToStudy] = useState([]);
+    const [word_id_list,set_word_id_list] = useState([]);
 
     // 正确答案
     const [correctAnswer, setCorrectAnswer] = useState([''])
 
-    // 判断答案正误
+    // 判断答案正误的显示
     const [answerCheck, setAnswerCheck] = useState('Choose an answer')
 
     // 可选项（干扰项+正确的选项）
-    const [answerChoices, setAnswerChoices] = useState(['C', 'D', 'E', 'F', 'G', 'A', 'B'])
+    const [answerChoices, setAnswerChoices] = useState([])
 
 
     // const [confusionChoices, setConfusionChoices] = useState('')
@@ -52,6 +62,12 @@ import { Button } from '@material-ui/core'
 
     }
 
+    const mountQuestion = () => {
+        console.log('mountQuestion')
+        console.log(Object.keys(mounted_unit_obj).length)
+    }
+
+    
 
     const handleStart = () => {
         console.log('handleStart')
@@ -62,21 +78,23 @@ import { Button } from '@material-ui/core'
     const checkAnswer = (user_answer) => {
         console.log('checkAnswer()')
         console.log(user_answer)
-        console.log(mountedQuestion)
 
-        if (mountedQuestion === user_answer.toLowerCase()) {
+
+        if (correctAnswer.toLowerCase() === user_answer.toLowerCase()) {
             setAnswerCheck('Correct')
 
         }
-        else if (mountedQuestion !== user_answer.toUpperCase()) {
+        else if (correctAnswer.toLowerCase() !== user_answer.toLowerCase()) {
             setAnswerCheck('Incorrect')
         }
+
     }
 
 
     useEffect(() => {
-        console.log(props)
-        
+        set_word_id_list(Object.keys(mounted_unit_obj))
+        console.log(mounted_unit_obj)
+        mountQuestion();
     }, [])
 
 
@@ -116,9 +134,10 @@ function mapStateToProps(state, ownProps) {
 
     return {
         daily_goal: state.profile.daily_goal,
-        mounted_unit_obj: state.profile.mounted_unit_obj
+        mounted_unit_obj: state.profile.mounted_unit_obj,
+        user_study_record : state.profile.user_study_record
     }
 
 }
 
-export default connect(mapStateToProps, {})((NoteReading));
+export default connect(mapStateToProps, {fetchUserStudyRecord})((NoteReading));

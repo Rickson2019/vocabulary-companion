@@ -4,9 +4,9 @@ import axios from "axios";
 import {
     SET_DAILY_GOAL,
     GET_DAILY_GOAL,
-    MOUNT_UNIT_OBJ_LOCAL,
+    MOUNT_UNIT_OBJ_LOCAL, 
     ARCHIVE_CURRENT,
-    MOUNT_UNIT_NAME
+    MOUNT_UNIT_NAME, FETCH_USER_STUDY_RECORD
 } from './types'
 
 
@@ -24,14 +24,24 @@ export const setDailyGoal = (goal) => dispatch => {
 }
 
 // 绑定当前这个单元的JSON Obj到store当中
-export const mountUnitObjLocal = (unit_obj) => dispatch => {
+export const mountUnitObjLocal = (unit_name) => dispatch => {
     console.log(MOUNT_UNIT_OBJ_LOCAL)
-    console.log(unit_obj)
+    console.log(unit_name)
     dispatch({
         type: MOUNT_UNIT_OBJ_LOCAL,
-        payload: unit_obj
+        payload: unit_name
     })
 }
+
+// // 绑定当前这个单元的JSON Obj到store当中
+// export const mountUnitObjLocalByName = (unit_obj) => dispatch => {
+//     console.log(MOUNT_UNIT_OBJ_LOCAL)
+//     console.log(unit_obj)
+//     dispatch({
+//         type: MOUNT_UNIT_OBJ_LOCAL,
+//         payload: unit_obj
+//     })
+// }
 
 // 把这个单元的名字传入store
 export const mountUnitName = (unit_name) => dispatch => {
@@ -68,6 +78,25 @@ export const getDailyGoal = (user_email) => dispatch => {
            }
        })
    });
+}
+
+// 获取用户的学习记录
+export const fetchUserStudyRecord = (user_email) => dispatch =>{
+    console.log(fetchUserStudyRecord);
+    console.log(user_email);
+    return axios.post(`${process.env.REACT_APP_EXPRESS_ENDPOINT}/fetch_user_study_record_by_email`,{
+        user_email : user_email
+    })
+    .then(({data})=>{
+        console.log(data);
+        dispatch({
+            type : FETCH_USER_STUDY_RECORD,
+            payload: {
+                user_study_record : data
+            }
+        })
+    })
+
 }
 
 

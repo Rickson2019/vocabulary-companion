@@ -1,14 +1,18 @@
 import React, { useState, Fragment, useEffect } from 'react'
-import { Button } from '@material-ui/core'
+import { Button, Typography } from '@material-ui/core'
 import CircularProgress from '@material-ui/core/CircularProgress';
+import AddCircleOutlineIcon from '@material-ui/icons/AddCircleOutline';
 import { connect } from 'react-redux'
 import axios from 'axios';
 import $ from 'jquery'
+
+import SocketIOFileUpload from 'socketio-file-upload';
 
 import { TextField } from '@material-ui/core'
 import { makeStyles } from '@material-ui/core/styles';
 
 import { Divider } from '@material-ui/core';
+import { Language } from '@material-ui/icons';
 
 const useStyles = makeStyles((theme) => ({
     engStn: {
@@ -25,14 +29,31 @@ const useStyles = makeStyles((theme) => ({
         width: '15vw'
     },
     unitList: {
-        width: '25vw'
+        height: '100px',
+        width: '100px',
+        backgroundColor: 'gray',
+        borderStyle: 'outset',
+        wordWrap: 'break-word'
+    },
+    unitListChosen: {
+        height: '100px',
+        width: '100px',
+        backgroundColor: 'blue',
+        borderStyle: 'outset',
+        wordWrap: 'break-word'
+    },
+    unit_list_div: {
+        maxHeight: '55vh',
+        height: '300px'
     }
 
 }));
 
 function Admin() {
 
+    const [mounted_language, set_mounted_language] = useState();
 
+    // 与 text 有关的 Hook
     const [word_id_text, set_word_id_text] = useState(null)
 
     const [english_meaning_text, set_english_meaning_text] = useState(null)
@@ -48,6 +69,8 @@ function Admin() {
     const [english_example_sentence_3_text, set_english_example_sentence_3_text] = useState(null)
     const [language_example_sentence_3_text, set_language_example_sentence_3_text] = useState(null)
 
+    //
+    const [new_unit_name_text, set_new_unit_name_text] = useState();
 
     const [wordlist, setWordList] = useState([])
 
@@ -65,9 +88,13 @@ function Admin() {
 
     const [all_word_lists, set_all_word_lists] = useState([])
 
+    // 添加新词单的步骤
+    const [addUnitStep, setAddUnitStep] = useState(0)
 
     // 标识了一下这是第几个词
     const [item_index, set_item_index] = useState(0)
+
+    const [loadingBool, setLoading] = useState(false)
 
     // 根据词单名获取整个词单
     const getWordListByListName = async (list_name) => {
@@ -88,6 +115,7 @@ function Admin() {
 
     const loadAllLanguageNames = () => {
         console.log('loadAllUnitNames')
+        setLoading(true)
         const response = axios.get(`${process.env.REACT_APP_EXPRESS_ENDPOINT}/return_all_the_unit_names`)
             .then(async function (response) {
                 console.log(response.data);
@@ -101,7 +129,7 @@ function Admin() {
                 console.log(languages_in_app)
                 console.log('all_the_unit_names')
                 console.log(all_the_unit_names)
-
+                setLoading(false);
 
 
             })
@@ -111,20 +139,29 @@ function Admin() {
     }
 
     const loadUnitNames = (language) => {
+
         console.log('loadUnits')
         console.log(language)
         console.log(all_the_unit_names[language])
+
+        set_mounted_language(language);
+        setAddUnitStep(1);
         set_all_wordlist_names_in_a_language(all_the_unit_names[language])
     }
 
     const mountUnit = (unit_name) => {
         console.log('mountUnit')
         console.log(unit_name)
-        // 
+
+        // 加载中
+        setLoading(true);
+        // 加载相应的Object
         getWordListByListName(unit_name).then((unit_obj) => {
             console.log(unit_obj)
-            set_mounted_unit_name(unit_name)
-            set_mounted_unit_obj(unit_obj)
+            set_mounted_unit_name(unit_name);
+            set_mounted_unit_obj(unit_obj);
+            // 加载好了
+            setLoading(false);
         })
 
 
@@ -213,6 +250,8 @@ function Admin() {
 
     useEffect(() => {
         // loadAllWords()
+        loadAllLanguageNames();
+
         loadAllUnits()
     }, [])
 
@@ -291,34 +330,23 @@ function Admin() {
         let english_example_sentence_3 = document.getElementById('english_example_sentence_3')
         let language_example_sentence_3 = document.getElementById('language_example_sentence_3')
 
-        console.log(word_id_TextField.value)
-        console.log(english_meaning_TextField.value)
-        console.log(chinese_meaning_TextField.value)
-
-        console.log(english_example_sentence_1.value)
-        console.log(language_example_sentence_1.value)
-
-        console.log(english_example_sentence_2.value)
-        console.log(language_example_sentence_2.value)
-
-        console.log(english_example_sentence_3.value)
-        console.log(language_example_sentence_3.value)
-
         return axios.post(`${process.env.REACT_APP_EXPRESS_ENDPOINT}/update_word_information_by_word_id`, {
             // important, the word list's name 
             wordlist_name: mounted_unit_name,
-            id: word_id_TextField.value,
-            english_meaning: english_meaning_TextField.value,
-            chinese_meaning: chinese_meaning_TextField.value,
+            obj: {
+                id: word_id_TextField.value,
+                english_meaning: english_meaning_TextField.value,
+                chinese_meaning: chinese_meaning_TextField.value,
 
-            english_example_sentence_1: english_example_sentence_1.value,
-            language_example_sentence_1: language_example_sentence_1.value,
+                english_example_sentence_1: english_example_sentence_1.value,
+                language_example_sentence_1: language_example_sentence_1.value,
 
-            english_example_sentence_2: english_example_sentence_2.value,
-            language_example_sentence_2: language_example_sentence_2.value,
+                english_example_sentence_2: english_example_sentence_2.value,
+                language_example_sentence_2: language_example_sentence_2.value,
 
-            english_example_sentence_3: english_example_sentence_3.value,
-            language_example_sentence_3: language_example_sentence_3.value,
+                english_example_sentence_3: english_example_sentence_3.value,
+                language_example_sentence_3: language_example_sentence_3.value,
+            }
 
 
         }, {
@@ -339,28 +367,36 @@ function Admin() {
     // the updated information 将更新的内容
     // will be written into the database 传入数据库
     const handleUpdate = () => {
-        console.log("handleUpdate")
+        console.log("handleUpdate");
 
     }
 
 
 
+    const handleCreateWordList = () => {
+        console.log('handleCreateWordList');
+
+        return axios.post(`${process.env.REACT_APP_EXPRESS_ENDPOINT}/create_word_list`,
+            {
+                user_email: 'user.email',
+                wordlist_name: new_unit_name_text,
+                language: mounted_language
+            },
+            {
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            })
+            .then(response => {
+                console.log(response.data)
+                return response.data
+            })
+    }
+
 
     return (
         <Fragment>
 
-
-
-
-            {
-                !(all_word_lists.length > 0 ||
-                    all_languages_in_app === !null)
-                &&
-                <Fragment>
-                    <CircularProgress />
-                    <p>Loading........</p>
-                </Fragment>
-            }
 
             {/* Allows the user to Choose from a list of Languages to inspect */}
             {
@@ -376,16 +412,124 @@ function Admin() {
 
             {/* Allows the user to Choose from a list of units to inspect */}
             {
-                all_wordlist_names_in_a_language
+                loadingBool
                 &&
                 <Fragment>
-                    {all_wordlist_names_in_a_language.map((item, idx) => (
-                        <button className={classes.unitList} variant='outlined' onClick={() => mountUnit(item)} className={classes.languageBtn}>{item}</button>
-                    ))}
+                    <CircularProgress />
+                    <p>Loading........</p>
+                </Fragment>
+            }
+            {
+                (all_wordlist_names_in_a_language && addUnitStep <= 1 && loadingBool === false)
+                &&
+                <Fragment>
+                    <div className={classes.unit_list_div}>
+                        {all_wordlist_names_in_a_language.map((item, idx) => (
+                            <Fragment>
+                                {mounted_unit_name !== item && <div onClick={() => mountUnit(item)} className={classes.unitList}>{item}</div>}
+                                {mounted_unit_name === item && <div onClick={() => mountUnit(item)} className={classes.unitListChosen}>{item}</div>}
+                            </Fragment>
+                        ))}
+                    </div>
                     <Divider />
+
+
                 </Fragment>
             }
 
+
+            {/* 添加新单元 */}
+            <Fragment>
+                {/* 添加单元的按钮 */}
+
+                {
+                    addUnitStep === 1 &&
+                    <Fragment>
+                        <Typography onClick={() => setAddUnitStep(2)}>
+                            <AddCircleOutlineIcon />
+                                Add a new Unit
+                            </Typography>
+                        <Divider />
+                    </Fragment>
+                }
+
+                {
+                    addUnitStep === 2 &&
+                    <Fragment>
+
+                        <Typography>
+                            Adding a new Unit
+                        </Typography>
+
+                        <Divider />
+                        <TextField placeholder='Please enter Unit Name' value={new_unit_name_text} onChange={(e) => set_new_unit_name_text(e.target.value)} />
+                        <Divider />
+                    </Fragment>
+                }
+
+                {
+                    addUnitStep === 3 &&
+                    <Fragment>
+
+                        <Typography>
+                            You are creating a list called:<Typography style={{ color: 'white', background: 'grey' }}>{new_unit_name_text}</Typography>in language <Typography style={{ color: 'white', background: 'blue' }}>{mounted_language}</Typography>
+                        </Typography>
+
+
+                    </Fragment>
+                }
+
+                <div>
+                    {addUnitStep != 1 &&
+                        <Button variant='contained' style={{ float: 'left' }} color='secondary' onClick={() => setAddUnitStep(addUnitStep - 1)}>Back</Button>
+                    }
+                    {(addUnitStep > 1 && addUnitStep < 3) &&
+                        <Button variant='contained' style={{ float: 'right' }} color='primary' onClick={() => setAddUnitStep(addUnitStep + 1)}>Next</Button>
+                    }
+                    {(addUnitStep === 3) &&
+                        <Button variant='contained' style={{ float: 'right' }} color='primary' onClick={handleCreateWordList}>CREATE</Button>
+                    }
+                </div>
+
+            </Fragment>
+
+            {/* 添加新词条 */}
+            {addUnitStep == 4 &&
+                <Fragment>
+                    <Button>Upload Picture</Button>
+
+                    {/* <p>{mounted_unit_obj[item_index].id}</p> */}
+                    <TextField defaultValue='word' id='word_id_TextField' className={classes.wordId} label={'Word ID'} value={word_id_text} onChange={(e) => set_word_id_text(e.target.value)} />
+                    <Divider />
+
+                    <TextField defaultValue='en' id='english_meaning_TextField' className={classes.enMeaning} label={'English Meaning'} value={english_meaning_text} onChange={(e) => set_english_meaning_text(e.target.value)} />
+                    <Divider />
+
+                    <TextField defaultValue='cn' id='chinese_meaning_TextField' className={classes.cnMeaning} label={'Chinese Meaning'} value={chinese_meaning_text} onChange={(e) => set_chinese_meaning_text(e.target.value)} />
+                    <Divider />
+
+                    <TextField defaultValue='stz' id='english_example_sentence_1' className={classes.engStn} label={'english_example_sentence_1'} value={english_example_sentence_1_text} onChange={(e) => set_english_example_sentence_1_text(e.target.value)} />
+                    <Divider />
+
+                    <TextField defaultValue='stz' id='language_example_sentence_1' className={classes.langStn} label={'language_example_sentence_1'} value={language_example_sentence_1_text} onChange={(e) => set_language_example_sentence_1_text(e.target.value)} />
+                    <Divider />
+
+                    <TextField defaultValue='stz' id='english_example_sentence_2' className={classes.engStn} label={'english_example_sentence_2'} value={english_example_sentence_2_text} onChange={(e) => set_english_example_sentence_2_text(e.target.value)} />
+                    <Divider />
+
+                    <TextField defaultValue='stz' id='language_example_sentence_2' className={classes.langStn} label={'language_example_sentence_2'} value={language_example_sentence_2_text} onChange={(e) => set_language_example_sentence_2_text(e.target.value)} />
+                    <Divider />
+
+                    <TextField defaultValue='stz' id='english_example_sentence_3' className={classes.engStn} label={'english_example_sentence_3'} value={english_example_sentence_3_text} onChange={(e) => set_english_example_sentence_3_text(e.target.value)} />
+                    <Divider />
+
+                    <TextField defaultValue={undefined} id='language_example_sentence_3' className={classes.langStn} label={'language_example_sentence_3'} onChange={(e) => set_language_example_sentence_3_text(e)} value={language_example_sentence_3_text} />
+                    <Divider />
+
+
+
+                </Fragment>
+            }
 
             {wordlist.length > 0 &&
                 <div>
@@ -438,10 +582,20 @@ function Admin() {
                         <TextField defaultValue={undefined} id='language_example_sentence_3' className={classes.langStn} label={'language_example_sentence_3'} onChange={(e) => set_language_example_sentence_3_text(e)} value={language_example_sentence_3_text} />
                         <Divider />
 
-                        <Button className={classes.updateBtn} onClick={updateByID} >Update</Button>
+
                         <Fragment>
-                            {item_index > 0 && <Button color='secondary' variant='contained' onClick={handleLast} >Last</Button>}
-                            <Button color='primary' variant='contained' onClick={handleNext}>Next</Button>
+                            <div style={{ textAlign: "center" }}>
+                                <Button className={classes.updateBtn} onClick={updateByID} >Update</Button>
+                            </div>
+
+
+                            <Divider />
+                            {item_index > 0 && <Button style={{ float: 'left' }} color='secondary' variant='contained' onClick={handleLast} >Last</Button>}
+
+
+
+
+                            <Button style={{ float: 'right' }} color='primary' variant='contained' onClick={handleNext}>Next</Button>
 
                         </Fragment>
 
@@ -453,7 +607,7 @@ function Admin() {
             {/* <Button onClick={loadAllWords}>return_all_the_unit_name</Button>
             <Button onClick={loadAllUnits}>Load All The Units</Button> */}
 
-            <Button color='primary' variant='contained' onClick={loadAllLanguageNames}>loadAllUnitNames</Button>
+            {/* <Button color='primary' variant='contained' onClick={() => { loadAllLanguageNames(); setAddUnitStep(1) }}>loadAllUnitNames</Button> */}
         </Fragment>
 
     )

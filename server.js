@@ -1,9 +1,10 @@
 const express = require('express')
 const app = express()
 const bodyParser = require('body-parser')
+const { ObjectId } = require('mongodb')
 const port = process.env.PORT || 3002
 const MongoClient = require('mongodb').MongoClient
-
+const ObjectID = require('mongodb').ObjectID
 const MONGODB_CONNECTION_STRING = "mongodb+srv://helloworld:bcitteam28@cluster0-r8cwn.mongodb.net/test?authSource=admin&replicaSet=Cluster0-shard-0&w=majority&readPreference=primary&appname=MongoDB%20Compass%20Community&retryWrites=true&ssl=true"
 
 app.use(bodyParser.json())
@@ -137,7 +138,80 @@ app.get('/test', (req, res) => {
 app.post('/update_word_information_by_word_id', (req, res) => {
     console.log("update_word_information_by_word_id")
     console.log(req.body)
-    
+    let wordlist_name = req.body.wordlist_name
+    let obj = req.body.obj
+    let word_id = req.body.obj.id
+
+    MongoClient.connect(MONGODB_CONNECTION_STRING,
+        {}
+        , function (err, db) {
+            if (err) throw err;
+            var dbo = db.db("vocabulary_companion");
+            dbo.collection(wordlist_name)
+                .updateOne(
+                    {id: word_id},
+                    {$set :obj},
+                    {upsert:true}
+                    )
+                .then(()=>{
+                    res.send('Successfully updated')
+                    res.end()
+                })
+        })
+
+})
+
+app.post('/fetch_user_study_record_by_email',(req,res) => {
+    console.log('fetch_user_study_record_by_email');
+    console.log(req.body.user_email)
+
+    MongoClient.connect(MONGODB_CONNECTION_STRING,
+        {}
+        , function (err, db) {
+            if (err) throw err;
+            var dbo = db.db("vocabulary_companion");
+            dbo.collection('users')
+                .findOne(
+                    {email: user_email}
+                    )
+                .then((result)=>{
+                    res.send(result.study_record)
+                    res.end()
+                })
+        })
+
+})
+
+app.post('/create_word_list',(req,res) => {
+
+
+    console.log('create_word_list');
+
+    console.log('creator: ')
+    console.log(req.body.user_email)
+    let user_email = req.body.user_email;
+    console.log('creator: ')
+    console.log(req.body.wordlist_name)
+    let wordlist_name = req.body.wordlist_name;
+
+    let language = req.body.language;
+    console.log(language)
+    MongoClient.connect(MONGODB_CONNECTION_STRING,
+        {}
+        , function (err, db) {
+            if (err) throw err;
+            var dbo = db.db("vocabulary_companion");
+            dbo.createCollection(wordlist_name);
+            dbo.collection('wordlist_indices')
+            .updateOne(
+               { _id : ObjectId('5f5ed3238b182bea4776b4b6')},
+                { $push: {[language] : wordlist_name}}
+            )
+            .then(()=>{
+                res.send('creation successful')
+            })
+        })
+
 })
 
 

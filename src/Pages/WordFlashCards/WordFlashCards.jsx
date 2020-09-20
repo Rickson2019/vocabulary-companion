@@ -13,6 +13,13 @@ import { Button } from '@material-ui/core'
 // 自定义的进度条
 import ProgressBar from '../shared_components/ProgressBar/ProgressBar'
 
+import { makeStyles } from '@material-ui/core/styles';
+
+
+const useStyles = makeStyles((theme) => ({
+    word_info_display : {},
+}))
+
 function WordFlashCards(props) {
     useEffect(() => {
         props.getDailyGoal()
@@ -85,8 +92,8 @@ function WordFlashCards(props) {
 
     const handlePrevious = () => {
         console.log('in handlePrevious')
+        mountNewFlashCard()
 
-        set_progress(progress_INT + 1)
     }
 
     // “斩” 掉这张卡片
@@ -116,23 +123,33 @@ function WordFlashCards(props) {
             })
     }
 
+
+    const classes = useStyles();
     return (
         <Fragment>
 
             <ProgressBar progress={progress_INT} total={props.daily_goal} />
-            <Button variant='contained' onClick={skipCurrent}>Skip</Button>
-            <Button variant='contained' color='primary' onClick={handlePrevious}>Previous</Button>
-            <Button variant='contained' color='primary' onClick={handleNext}>Next</Button>
-            <Button variant='contained' color='primary' onClick={archiveCurrent}>Archive</Button>
 
-            {mounted_flashcard && <div>
-                <div id='flash-card-word'>{mounted_flashcard.id}</div>
-                <div id='flash-card-english-meaning'>{mounted_flashcard.english_meaning}</div>
-                <div id='flash-card-pronounciation'>/{mounted_flashcard.pronounciation}/</div>
-                <div id='flash-card-gender'>gender: {mounted_flashcard.gender}</div>
-                <img style={{ maxWidth: '60vw' }} alt='mounted_flashcard' src={`/images/essential_french/${mounted_flashcard.id}.jpg`} />
-                <img style={{ maxWidth: '60vw' }} alt='english_meaning' src={`/images/german_demo/${mounted_flashcard.english_meaning}.jpg`} />
+
+            {mounted_flashcard && 
+            <div id='word_info_display_container' >
+                <div className='word_info_display_item' id='flash-card-word'>{mounted_flashcard.id}</div>
+                <div className='word_info_display_item' id='flash-card-english-meaning'>{mounted_flashcard.english_meaning}</div>
+                <div className='word_info_display_item' id='flash-card-pronounciation'>{mounted_flashcard.pronounciation}</div>
+                <div className='word_info_display_item' id='flash-card-gender'>gender: {mounted_flashcard.gender}</div>
+                {/* <img style={{ maxWidth: '60vw' }} alt='mounted_flashcard' src={`/images/${props.mounted_unit_name}/${mounted_flashcard.id}.jpg`} />
+                <img style={{ maxWidth: '60vw' }} alt='english_meaning' src={`/images/${props.mounted_unit_name}/${mounted_flashcard.english_meaning}.jpg`} /> */}
+                <img id='WordFlashCards_picture_display' alt='flashcard_picture_display' src={`/images/test/${mounted_flashcard.english_meaning.toLowerCase()}.jpg`} />
             </div>}
+
+            
+
+            <div id='WordFlashCards_buttonDiv'>
+                <Button variant='contained' onClick={skipCurrent}>Skip</Button>
+                <Button variant='contained' color='primary' onClick={handlePrevious}>Previous</Button>
+                <Button variant='contained' color='primary' onClick={handleNext}>Next</Button>
+                <Button variant='contained' color='secondary' onClick={archiveCurrent}>Archive</Button>
+            </div>
         </Fragment>
     )
 }
@@ -142,7 +159,8 @@ function mapStateToProps(state, ownProps) {
     console.log(ownProps)
     return {
         daily_goal: state.profile.daily_goal,
-        mounted_unit_obj: state.profile.mounted_unit_obj
+        mounted_unit_obj: state.profile.mounted_unit_obj,
+        mounted_unit_name : state.profile.mounted_unit_name
     }
 
 }

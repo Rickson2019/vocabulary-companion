@@ -1,10 +1,13 @@
-import React from 'react';
+import React, {useEffect} from 'react';
+import {useAuth0} from '@auth0/auth0-react'
 
 import UnitChoice from './Pages/UnitChoice/UnitChoice'
 import Settings from './Pages/Settings/Settings'
 import WordFlashCards from './Pages/WordFlashCards/WordFlashCards'
 import WordQuiz from './Pages/WordQuiz/WordQuiz'
 import Admin from './Pages/Admin/Admin'
+
+import LoginButton from './Pages/Auth0/LoginButton'
 
 import {
   BrowserRouter as Router,
@@ -20,6 +23,12 @@ import { Button } from '@material-ui/core';
 const LiveRoute = withRouter(NotLiveRoute)
 
 function App() {
+
+  const { user, isAuthenticated, isLoading } = useAuth0();
+
+  useEffect(() => {
+    console.log(user)
+  }, [isAuthenticated])
 
   return (
     <div>
@@ -44,6 +53,7 @@ function App() {
 
           <Link style={{ textDecoration: 'none' }} to='/word-flash-cards' ><Button>Flash Cards</Button></Link>
           <Link style={{ textDecoration: 'none' }} to='/unit-choice'><Button>Unit Choice</Button></Link>
+          <LoginButton />
         </div>
       </Route>
 

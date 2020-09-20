@@ -1,6 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import './index.css';
+import './index.scss';
 import App from './App';
 import * as serviceWorker from './serviceWorker';
 import { BrowserRouter } from 'react-router-dom'
@@ -11,11 +11,19 @@ import store from './store'
 
 
 ReactDOM.render(
+  <Auth0Provider
+  domain="homescouter.us.auth0.com"
+  clientId="7zjrx3fpch1CkGxZhU40mFgEGHFV7wfk"
+  redirectUri={window.location.origin}
+>
+
   <Provider store={store}>
   <BrowserRouter>
     <App />
   </BrowserRouter>
-  </Provider>,
+  </Provider>
+  
+  </Auth0Provider>,
   document.getElementById('root')
 );
 

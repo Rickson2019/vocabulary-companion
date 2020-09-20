@@ -4,16 +4,19 @@ import axios from "axios";
 import {
     SET_DAILY_GOAL,
     MOUNT_UNIT_OBJ_LOCAL,
-    ARCHIVE_CURRENT
+    ARCHIVE_CURRENT,
+    FETCH_USER_STUDY_RECORD
 } from '../actions/types'
 
 // 导入单元
 var essential_french_JSON = require('../Data/essential_french.json')
 var german_demo_JSON = require('../Data/german_demo.json')
+var german_wordlist_A2_JSON = require('../Data/german_A2.json')
 
 const curriculum = {
     'Essential French': essential_french_JSON,
     'German Demo': german_demo_JSON,
+    'german_wordlist_A2': german_wordlist_A2_JSON,
 }
 
 
@@ -54,7 +57,7 @@ export default function (state = initialState, action) {
             console.log(`mounted_unit_name: ${unit_name}`)
             console.log(curriculum[unit_name][unit_name])
             // 纯一级Object（一个key对应一个value的元组）
-            let mounted_unit_obj = curriculum[unit_name][unit_name]
+            let mounted_unit_obj = (curriculum[unit_name][unit_name]?curriculum[unit_name][unit_name] : curriculum[unit_name] )
             return { 
                 ...state,
                 mounted_unit_obj : mounted_unit_obj,
@@ -66,8 +69,9 @@ export default function (state = initialState, action) {
         }
         
         case ARCHIVE_CURRENT : {
-            console.log(action.payload)
-            console.log(ARCHIVE_CURRENT)
+            console.log(ARCHIVE_CURRENT);
+            console.log(action.payload);
+            
             let current_obj = action.payload
             console.log('current_obj')
             console.log(current_obj)
@@ -75,6 +79,16 @@ export default function (state = initialState, action) {
                 ...state,
                 // 放进去成数组
                 archived_obj : [...state.archived_obj,current_obj]
+            }
+        }
+
+        case FETCH_USER_STUDY_RECORD : {
+            console.log(FETCH_USER_STUDY_RECORD)
+            console.log(action.payload);
+
+            return{
+                ...state,
+                user_study_record : action.payload
             }
         }
 
