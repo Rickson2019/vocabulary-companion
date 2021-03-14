@@ -1,0 +1,17 @@
+.add_input_field_div {
+  display: flex;
+  flex-direction: row;
+}
+
+.input_field_div {
+  display: flex;
+  flex-direction: column;
+  margin-top: 2vh;
+}
+
+.input_group {
+  border: 0.5em;
+  border-style: groove;
+  color: red;
+  margin-bottom: 3vh;
+}

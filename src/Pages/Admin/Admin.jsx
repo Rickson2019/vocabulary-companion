@@ -14,6 +14,9 @@ import { makeStyles } from '@material-ui/core/styles';
 import { Divider } from '@material-ui/core';
 import { Language } from '@material-ui/icons';
 
+import  admin_input_types from '../../attributes'
+
+
 const useStyles = makeStyles((theme) => ({
     engStn: {
         width: '90vw'
@@ -43,7 +46,7 @@ const useStyles = makeStyles((theme) => ({
         wordWrap: 'break-word'
     },
     unit_list_div: {
-        maxHeight: '55vh',
+        maxHeight: '45vh',
         height: '300px'
     }
 
@@ -250,6 +253,7 @@ function Admin() {
 
     useEffect(() => {
         // loadAllWords()
+        console.log(admin_input_types)
         loadAllLanguageNames();
 
         loadAllUnits()

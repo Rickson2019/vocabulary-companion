@@ -5,7 +5,8 @@ import {
     SET_DAILY_GOAL,
     MOUNT_UNIT_OBJ_LOCAL,
     ARCHIVE_CURRENT,
-    FETCH_USER_STUDY_RECORD
+    FETCH_USER_STUDY_RECORD,
+    UPDATE_STUDY_TASK
 } from '../actions/types'
 
 // 导入单元
@@ -21,9 +22,9 @@ const curriculum = {
 
 
 const initialState = {
-    daily_goal : 15,
-    archived_obj : [],
-    mounted_unit_name : null
+    daily_goal: 15,
+    archived_obj: [],
+    mounted_unit_name: null
 }
 
 export default function (state = initialState, action) {
@@ -31,69 +32,89 @@ export default function (state = initialState, action) {
     switch (action.type) {
 
         // 负责将每日任务提交到服务器
-        case SET_DAILY_GOAL : {
+        case SET_DAILY_GOAL: {
             console.log(action.payload)
             console.log(SET_DAILY_GOAL)
 
             axios.post(`${process.env.REACT_APP_EXPRESS_ENDPOINT}/upDateDailyGoal`,
-            {user_email : action.payload.user_email,
-             daily_goal : action.payload.daily_goal
-            })
-            
+                {
+                    user_email: action.payload.user_email,
+                    daily_goal: action.payload.daily_goal
+                })
+
             // Map status (step)
-            return { 
+            return {
                 ...state,
                 home_owner_map_config_step: action.payload.home_owner_map_config_step
             };
         }
 
         // 负责加载目标词单
-        case MOUNT_UNIT_OBJ_LOCAL : {
+        case MOUNT_UNIT_OBJ_LOCAL: {
             console.log(action.payload)
             console.log(MOUNT_UNIT_OBJ_LOCAL)
 
             let unit_name = action.payload
-            
+
             console.log(`mounted_unit_name: ${unit_name}`)
             console.log(curriculum[unit_name][unit_name])
             // 纯一级Object（一个key对应一个value的元组）
-            let mounted_unit_obj = (curriculum[unit_name][unit_name]?curriculum[unit_name][unit_name] : curriculum[unit_name] )
-            return { 
+            let mounted_unit_obj = (curriculum[unit_name][unit_name] ? curriculum[unit_name][unit_name] : curriculum[unit_name])
+            return {
                 ...state,
-                mounted_unit_obj : mounted_unit_obj,
+                mounted_unit_obj: mounted_unit_obj,
                 // 找出为什么是个数组
                 // console.log 出来的是string
-                mounted_unit_name : unit_name[0]
+                mounted_unit_name: unit_name[0]
             };
-            
         }
-        
-        case ARCHIVE_CURRENT : {
+
+
+
+
+        case ARCHIVE_CURRENT: {
             console.log(ARCHIVE_CURRENT);
             console.log(action.payload);
-            
+
             let current_obj = action.payload
             console.log('current_obj')
             console.log(current_obj)
-            return{
+            return {
                 ...state,
                 // 放进去成数组
-                archived_obj : [...state.archived_obj,current_obj]
+                archived_obj: [...state.archived_obj, current_obj]
             }
         }
 
-        case FETCH_USER_STUDY_RECORD : {
+        // 获取学习记录
+        case FETCH_USER_STUDY_RECORD: {
             console.log(FETCH_USER_STUDY_RECORD)
             console.log(action.payload);
+            let user_study_record = action.payload;
 
-            return{
+            return {
                 ...state,
-                user_study_record : action.payload
+                // 已学会的单词(有过非"斩"的学习记录)
+                learned_words: user_study_record.learned_words,
+                // "斩"掉的单词
+                archived_words: user_study_record.archived_words,
+
+
             }
         }
 
-        
-        
+        case UPDATE_STUDY_TASK: {
+            console.log(UPDATE_STUDY_TASK)
+            console.log(action.payload)
+
+            return {
+                ...state,
+
+            }
+        }
+
+
+
 
         default:
             return state;

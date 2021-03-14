@@ -1,5 +1,8 @@
 // 导入React 相关的一些Component以及functions
 import React, { Fragment, useEffect, useState } from 'react'
+
+import {useAuth0} from '@auth0/auth0-react'
+
 // JQuery框架
 import $ from 'jquery'
 
@@ -11,9 +14,13 @@ import { getDailyGoal, archiveCurrent } from '../../actions/profileActions'
 // Material UI 组件库
 import { Button } from '@material-ui/core'
 // 自定义的进度条
-import ProgressBar from '../shared_components/ProgressBar/ProgressBar'
+import ProgressBar from '../../Components/ProgressBar'
 
 import { makeStyles } from '@material-ui/core/styles';
+
+
+// 获取用户的学习记录
+import { fetchUserStudyRecord } from '../../actions/profileActions'
 
 
 const useStyles = makeStyles((theme) => ({
@@ -21,22 +28,31 @@ const useStyles = makeStyles((theme) => ({
 }))
 
 function WordFlashCards(props) {
+
+    const { user, isAuthenticated, isLoading } = useAuth0();
+
+    const [loadingBool, setLoading] = useState(false)
+
     useEffect(() => {
         props.getDailyGoal()
         console.log(props.daily_goal)
         console.log(props.mounted_unit_obj)
+        props.fetchUserStudyRecord(user.email); 
+    }, [user])
 
-    }, [props.mounted_unit_obj])
-
-    // 已经学过的单词
+    // 全部已经学过的单词
     const [learned_word_list, set_learned] = useState([])
 
+    // 本单元已学过的单词
     const [current_learned_word_list, set_current_learned] = useState([])
 
+    // 本单元还没有学习的
     const [words_to_learn_list, set_words_to_learn] = useState(props.mounted_unit_obj)
 
+    // 进度追踪
     const [progress_INT, set_progress] = useState(0)
 
+    // 挂载的卡片
     const [mounted_flashcard, set_mounted_flashcard] = useState(null)
 
     // 更新卡片
@@ -50,6 +66,15 @@ function WordFlashCards(props) {
         set_mounted_flashcard(random_flashcard)
         console.log(random_flashcard)
     }
+
+    
+
+    // 
+    const mountLastFlashCard = () => {
+
+    }
+
+    
 
     // 从待学的list里面移除
     const removeFromToLearnList = () => {
@@ -89,7 +114,7 @@ function WordFlashCards(props) {
         set_progress(progress_INT + 1)
     }
 
-
+    // 返回上一个页面
     const handlePrevious = () => {
         console.log('in handlePrevious')
         mountNewFlashCard()
@@ -154,6 +179,7 @@ function WordFlashCards(props) {
     )
 }
 
+
 function mapStateToProps(state, ownProps) {
     console.log('props')
     console.log(ownProps)
@@ -166,4 +192,4 @@ function mapStateToProps(state, ownProps) {
 }
 
 // 
-export default connect(mapStateToProps, { getDailyGoal, archiveCurrent })((WordFlashCards));
+export default connect(mapStateToProps, { fetchUserStudyRecord, getDailyGoal, archiveCurrent })((WordFlashCards));

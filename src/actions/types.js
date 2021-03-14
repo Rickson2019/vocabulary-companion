@@ -16,11 +16,14 @@ export const FETCH_USER_STUDY_RECORD = 'FETCH_USER_STUDY_RECORD'
 // 将学习记录更新到云端
 export const UPDATE_USER_STUDY_RECORD = 'UPDATE_USER_STUDY_RECORD'
 
+// 
 
 
 // Admin Page Related
 export const UPDATE_WORD_INFO = 'UPDATE_WORD_INFO'
+
+// 
 export const MOUNT_UNIT_NAME = 'MOUNT_UNIT_NAME'
 
- 
-
+// 
+export const UPDATE_STUDY_TASK = 'UPDATE_STUDY_TASK'

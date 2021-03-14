@@ -3,6 +3,8 @@ import { Button, Typography } from '@material-ui/core'
 import { Redirect } from 'react-router-dom'
 import { connect } from "react-redux";
 import axios from 'axios'
+import CircularProgress from '@material-ui/core/CircularProgress';
+
 import $, { type } from 'jquery'
 // // 传本地JSON文件
 import { mountUnitObjLocal,mountUnitName } from '../../actions/profileActions'
@@ -37,7 +39,7 @@ function UnitChoice(props) {
         console.log(language_version)
     }, [language_version])
 
-    const [loading, setLoading] = useState(null);
+    const [loadingBool, setLoading] = useState(null);
 
     const [all_the_unit_names, set_all_the_unit_names] = useState(null)
 
@@ -147,6 +149,15 @@ function UnitChoice(props) {
                 <Button variant='contained' color='secondary' onClick={() => setMountedUnit(null)}>No</Button>
 
             </div>}
+
+            {
+                loadingBool
+                &&
+                <Fragment>
+                    <CircularProgress />
+                    <p>Loading........</p>
+                </Fragment>
+            }
 
             {/* Study mode choice */}
             {startLearningBool &&
