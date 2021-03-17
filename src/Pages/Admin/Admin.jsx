@@ -14,7 +14,16 @@ import { makeStyles } from '@material-ui/core/styles';
 import { Divider } from '@material-ui/core';
 import { Language } from '@material-ui/icons';
 
-import  admin_input_types from '../../attributes'
+import admin_input_types from '../../attributes'
+
+// ====================== redux功能 ============================
+
+import {
+    loadAllLanguageNames, //获取数据库中所有的Language种类
+    getWordListByListName
+} from '../../actions/adminActions'
+
+
 
 
 const useStyles = makeStyles((theme) => ({
@@ -116,6 +125,7 @@ function Admin() {
             })
     }
 
+    // 加载数据库中所有已有语言
     const loadAllLanguageNames = () => {
         console.log('loadAllUnitNames')
         setLoading(true)
@@ -618,8 +628,10 @@ function Admin() {
 }
 
 function mapStateToProps(state, ownProps) {
+
     console.log('props')
     console.log(ownProps)
+
     return {
         mounted_unit_obj: state.profile.mounted_unit_obj,
         mounted_unit_name: state.profile.mounted_unit_obj
@@ -627,4 +639,8 @@ function mapStateToProps(state, ownProps) {
 
 }
 
-export default connect(mapStateToProps, {})((Admin));
+export default connect(mapStateToProps, {
+    loadAllLanguageNames,
+    getWordListByListName
+
+})((Admin));

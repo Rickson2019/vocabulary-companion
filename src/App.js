@@ -7,7 +7,7 @@ import WordFlashCards from './Pages/WordFlashCards/WordFlashCards'
 import WordQuiz from './Pages/WordQuiz/WordQuiz'
 import Admin from './Pages/Admin/Admin'
 
-import MultipleChoice from './Test/MultipleChoice'
+import Admin2 from './Pages/Test/MultipleChoice'
 
 import LoginButton from './Pages/Auth0/LoginButton'
 
@@ -47,7 +47,7 @@ function App() {
         <Route exact path='/word-flash-cards' component={WordFlashCards} />
         <Route exact path='/word-quiz' component={WordQuiz} />
         <Route exact path='/admin' component={Admin} />
-        <Route exact path='/test' component={MultipleChoice} />
+        <Route exact path='/test' component={Admin2} />
       </div>
 
       {/*<Route>标签之间所包围的部分就是渲染的内容 */}

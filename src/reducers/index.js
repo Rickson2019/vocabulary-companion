@@ -4,9 +4,11 @@ import { combineReducers } from 'redux'
 
 import profileReducer from './profileReducer'
 import backstageReducer from './backstageReducer'
+import adminReducer from './adminReducer'
 
 // 把Reducers给联合起来
 export default combineReducers({
-    profile : profileReducer,
-    backstage : backstageReducer,
- })
+    profile: profileReducer,
+    backstage: backstageReducer,
+    admin: adminReducer,
+})

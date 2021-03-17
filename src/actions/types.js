@@ -19,8 +19,14 @@ export const UPDATE_USER_STUDY_RECORD = 'UPDATE_USER_STUDY_RECORD'
 // 
 
 
-// Admin Page Related
+// Admin Page
+export const GET_WORD_LIST_BY_NAME = 'GET_WORD_LIST_BY_NAME'
+
+// update word axios
 export const UPDATE_WORD_INFO = 'UPDATE_WORD_INFO'
+
+// 
+export const LOAD_ALL_LANGUAGE_NAMES = 'LOAD_ALL_LANGUAGE_NAMES'
 
 // 
 export const MOUNT_UNIT_NAME = 'MOUNT_UNIT_NAME'

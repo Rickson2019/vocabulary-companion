@@ -1,7 +1,7 @@
 // 导入React 相关的一些Component以及functions
 import React, { Fragment, useEffect, useState } from 'react'
 
-import {useAuth0} from '@auth0/auth0-react'
+import { useAuth0 } from '@auth0/auth0-react'
 
 // JQuery框架
 import $ from 'jquery'
@@ -24,7 +24,7 @@ import { fetchUserStudyRecord } from '../../actions/profileActions'
 
 
 const useStyles = makeStyles((theme) => ({
-    word_info_display : {},
+    word_info_display: {},
 }))
 
 function WordFlashCards(props) {
@@ -37,7 +37,7 @@ function WordFlashCards(props) {
         props.getDailyGoal()
         console.log(props.daily_goal)
         console.log(props.mounted_unit_obj)
-        props.fetchUserStudyRecord(user.email); 
+        props.fetchUserStudyRecord(user.email);
     }, [user])
 
     // 全部已经学过的单词
@@ -67,14 +67,14 @@ function WordFlashCards(props) {
         console.log(random_flashcard)
     }
 
-    
+
 
     // 
     const mountLastFlashCard = () => {
 
     }
 
-    
+
 
     // 从待学的list里面移除
     const removeFromToLearnList = () => {
@@ -156,18 +156,18 @@ function WordFlashCards(props) {
             <ProgressBar progress={progress_INT} total={props.daily_goal} />
 
 
-            {mounted_flashcard && 
-            <div id='word_info_display_container' >
-                <div className='word_info_display_item' id='flash-card-word'>{mounted_flashcard.id}</div>
-                <div className='word_info_display_item' id='flash-card-english-meaning'>{mounted_flashcard.english_meaning}</div>
-                <div className='word_info_display_item' id='flash-card-pronounciation'>{mounted_flashcard.pronounciation}</div>
-                <div className='word_info_display_item' id='flash-card-gender'>gender: {mounted_flashcard.gender}</div>
-                {/* <img style={{ maxWidth: '60vw' }} alt='mounted_flashcard' src={`/images/${props.mounted_unit_name}/${mounted_flashcard.id}.jpg`} />
+            {mounted_flashcard &&
+                <div id='word_info_display_container' >
+                    <div className='word_info_display_item' id='flash-card-word'>{mounted_flashcard.id}</div>
+                    <div className='word_info_display_item' id='flash-card-english-meaning'>{mounted_flashcard.english_meaning}</div>
+                    <div className='word_info_display_item' id='flash-card-pronounciation'>{mounted_flashcard.pronounciation}</div>
+                    <div className='word_info_display_item' id='flash-card-gender'>gender: {mounted_flashcard.gender}</div>
+                    {/* <img style={{ maxWidth: '60vw' }} alt='mounted_flashcard' src={`/images/${props.mounted_unit_name}/${mounted_flashcard.id}.jpg`} />
                 <img style={{ maxWidth: '60vw' }} alt='english_meaning' src={`/images/${props.mounted_unit_name}/${mounted_flashcard.english_meaning}.jpg`} /> */}
-                <img id='WordFlashCards_picture_display' alt='flashcard_picture_display' src={`/images/test/${mounted_flashcard.english_meaning.toLowerCase()}.jpg`} />
-            </div>}
+                    <img id='WordFlashCards_picture_display' alt='flashcard_picture_display' src={`/images/test/${mounted_flashcard.english_meaning.toLowerCase()}.jpg`} />
+                </div>}
 
-            
+
 
             <div id='WordFlashCards_buttonDiv'>
                 <Button variant='contained' onClick={skipCurrent}>Skip</Button>
@@ -186,10 +186,14 @@ function mapStateToProps(state, ownProps) {
     return {
         daily_goal: state.profile.daily_goal,
         mounted_unit_obj: state.profile.mounted_unit_obj,
-        mounted_unit_name : state.profile.mounted_unit_name
+        mounted_unit_name: state.profile.mounted_unit_name
     }
 
 }
 
 // 
-export default connect(mapStateToProps, { fetchUserStudyRecord, getDailyGoal, archiveCurrent })((WordFlashCards));
+export default connect(mapStateToProps, {
+    fetchUserStudyRecord,
+    getDailyGoal,
+    archiveCurrent
+})((WordFlashCards));

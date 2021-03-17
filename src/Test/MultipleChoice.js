@@ -1,11 +1,15 @@
 import React, { useState, useEffect } from 'react'
 import SelectionMenu from '../Components/SelectionMenu'
 import { admin_input_types, input_group_types } from '../attributes'
-
+import { connect } from 'react-redux'
 // const admin_input_type_context = React.createContext();
 import styles from '../Styles/admin.module.scss'
 import input_groups_id_tracker_schema from '../attributes'
 
+import {
+    loadAllLanguageNames, //获取数据库中所有的Language种类
+    getWordListByListName
+} from '../actions/adminActions'
 
 // Destructuring the admin_input_types
 const {
@@ -29,12 +33,18 @@ const {
 
 // const {}
 
-export default function MultipleChoice() {
+function MultipleChoice({ loadAllLanguageNames }) {
 
     //input_groups_id_tracker初始值都是1
     const [input_groups_id_tracker, updateInputGroupsIDtracker] = useState(input_groups_id_tracker_schema);
 
     const [input_groups, setInputs] = useState([[{ key: 0, id: 0, type: language_example_sentence }, { id: 1, type: english_example_sentence }],])
+
+    useEffect(() => {
+        console.log('loadAllLanguageNames()')
+        loadAllLanguageNames()
+    }, [])
+
 
     const appendInput = (input_group_option) => {
         // 初始化：是 NEW_WORD 类型
@@ -65,24 +75,6 @@ export default function MultipleChoice() {
     // Set Opt 的hook
     const [child_input_type_opt, setOpt] = useState(null)
 
-    useEffect(() => {
-        console.log('child_input_type_opt')
-        console.log(child_input_type_opt)
-    }, [child_input_type_opt])
-
-    useEffect(() => {
-        console.log('inputs')
-        console.log(input_groups)
-        if (input_groups instanceof Array) {
-            console.log('inputs is an array')
-        }
-    }, [input_groups])
-
-    useEffect(() => {
-        console.log('input_groups_id_tracker')
-        console.log(input_groups_id_tracker)
-
-    }, [input_groups_id_tracker])
 
     // 传入SelectionMenu，用于获取用户选择的option
     const getOptionFunction = (option) => {
@@ -101,9 +93,9 @@ export default function MultipleChoice() {
                             <div className={styles.input_group}>
                                 {group.map((item) =>
                                     item.type &&
-                                    <div className={styles.input_field_div}>
+                                    <div key={item.id} className={styles.input_field_div}>
                                         <label>{item.type}</label>
-                                        <input key={item.id} name={item.id} id={`input-${item.id}`} />
+                                        <input name={item.id} id={`input-${item.id}`} />
                                     </div>
                                 )}
                             </div>
@@ -127,3 +119,44 @@ export default function MultipleChoice() {
 
 
 }
+
+
+function mapStateToProps(state, ownProps) {
+
+    console.log('props')
+    console.log(ownProps)
+
+    return {
+        mounted_unit_obj: state.profile.mounted_unit_obj,
+        mounted_unit_name: state.profile.mounted_unit_obj
+    }
+
+}
+
+export default connect(mapStateToProps, {
+    loadAllLanguageNames,
+    getWordListByListName
+})((MultipleChoice));
+
+
+
+//// ARCHIVED:
+
+// useEffect(() => {
+//     console.log('child_input_type_opt')
+//     console.log(child_input_type_opt)
+// }, [child_input_type_opt])
+
+// useEffect(() => {
+//     console.log('inputs')
+//     console.log(input_groups)
+//     if (input_groups instanceof Array) {
+//         console.log('inputs is an array')
+//     }
+// }, [input_groups])
+
+// useEffect(() => {
+//     console.log('input_groups_id_tracker')
+//     console.log(input_groups_id_tracker)
+
+// }, [input_groups_id_tracker])

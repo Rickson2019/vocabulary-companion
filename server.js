@@ -29,7 +29,7 @@ app.post('/get_profile_obj_by_email', (req, res) => {
     console.log('get_profile_obj_by_email')
 
     console.log('user_email')
-    user_email = req.user_email
+    let user_email = req.user_email
 
     console.log(user_email)
     MongoClient.connect(MONGODB_CONNECTION_STRING,
@@ -126,6 +126,25 @@ app.post('/get_word_list_by_list_name', (req, res) => {
                 .toArray((err, doc) => {
                     console.log(doc)
                     res.send(doc)
+                })
+        })
+})
+
+// Get All Languages
+app.get('/get_all_language_names', (req, res) => {
+    console.log("get_word_list_by_list_name")
+    MongoClient.connect(MONGODB_CONNECTION_STRING,
+        {}
+        , function (err, db) {
+            if (err) throw err;
+            var dbo = db.db("vocabulary_companion");
+
+            dbo.collection("wordlist_indices")
+                .findOne()
+                .then(result => {
+                    console.log(result.languages_in_app)
+                    res.send(result.languages_in_app)
+                    res.end()
                 })
         })
 })

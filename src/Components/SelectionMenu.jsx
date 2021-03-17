@@ -1,4 +1,4 @@
-import React , {useState} from 'react';
+import React, { useState } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
@@ -21,14 +21,14 @@ const useStyles = makeStyles((theme) => ({
 //   'Hide all notification content',
 // ];
 
-export default function SelectionMenu({options, prompt_label, func}) {
+export default function SelectionMenu({ options, prompt_label, func }) {
   const classes = useStyles();
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [selectedIndex, setSelectedIndex] = React.useState(1);
 
   const [disabled_option, setDisabledOption] = React.useState(false);
 
- 
+
 
   const handleClickListItem = (event) => {
     setAnchorEl(event.currentTarget);
@@ -36,11 +36,13 @@ export default function SelectionMenu({options, prompt_label, func}) {
 
   const handleMenuItemClick = (event, index) => {
     setSelectedIndex(index);
+
     // 只能出现一次
-    if(index===0){
-        console.log('disabled')
-        setDisabledOption(0)
+    if (index === 0) {
+      console.log('disabled')
+      setDisabledOption(0)
     }
+
     console.log('chosen_type')
     console.log(options[index])
     console.log(options)
@@ -53,7 +55,7 @@ export default function SelectionMenu({options, prompt_label, func}) {
     setAnchorEl(null);
   };
 
-//   const chosen_type = useContext(admin_input_type_context);
+  //   const chosen_type = useContext(admin_input_type_context);
   return (
     <div className={classes.root}>
       <List component="nav" aria-label="Device settings">
@@ -86,7 +88,7 @@ export default function SelectionMenu({options, prompt_label, func}) {
           >
             {option}
           </MenuItem>
-          
+
         ))}
       </Menu>
     </div>
