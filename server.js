@@ -24,6 +24,44 @@ app.use(cors())
 
 app.get('/', (req, res) => res.send('Hello World!'))
 
+
+//  通过邮箱来获取用户信息，看它在学什么单元
+//  然后load还没学过的20个单词
+app.post('/get_20_words_by_unit_name_and_user_email', (req, res) => {
+    // 还没学过的怎么判断：
+    console.log('get_20_words_by_unit_name_and_user_email')
+
+    let user_email = req.user_email
+    console.log('user_email')
+    console.log(user_email)
+
+    let unit_name = req.unit_name
+    console.log('unit_name')
+    console.log(unit_name)
+
+    MongoClient.connect(MONGODB_CONNECTION_STRING,
+        {}
+        , function (err, db) {
+
+            if (err) throw err;
+            var dbo = db.db("vocabulary_companion");
+
+            dbo.collection("user")
+                .findOne(
+                    { email: user_email },
+                )
+                .then(result => {
+                    console.log(result)
+                }).then(() => {
+                    console.log('second then()')
+                })
+        })
+})
+
+
+
+
+
 // 通过邮箱来获取用户信息
 app.post('/get_profile_obj_by_email', (req, res) => {
     console.log('get_profile_obj_by_email')
@@ -52,7 +90,7 @@ app.post('/get_profile_obj_by_email', (req, res) => {
 
 app.post('/get_wordlist_obj_by_name', (req, res) => {
     console.log('get_wordlist_obj_by_name')
-    wordlist_name = req.wordlist_name
+    let wordlist_name = req.wordlist_name
 
     console.log('wordlist_name')
     console.log(wordlist_name)
@@ -74,7 +112,7 @@ app.post('/get_wordlist_obj_by_name', (req, res) => {
 
 app.post('/update_word_info_by_wordname', (req, res) => {
     console.log('update_word_info_by_wordname(ID)')
-    wordlist_name = req.word_id
+    let wordlist_name = req.word_id
 
     console.log('wordlist_name')
     console.log(wordlist_name)
@@ -111,6 +149,28 @@ app.get('/return_all_the_unit_names', (req, res) => {
         })
 })
 
+//把这个语言的所有词表名全部发送供人选择。
+app.post('/get_word_lists_by_language_name', (req, res) => {
+    console.log("get_word_lists_by_language_name")
+    console.log(req.body)
+    let language = req.body.language
+    console.log(language)
+    MongoClient.connect(MONGODB_CONNECTION_STRING,
+        {}
+        , function (err, db) {
+            if (err) throw err;
+            var dbo = db.db("vocabulary_companion");
+            dbo.collection('wordlist_indices')
+                .find({})
+                .toArray((err, doc) => {
+                    console.log(doc)
+                    let language_unit = doc[0][language]
+                    res.send(language_unit)
+                })
+        })
+})
+
+
 app.post('/get_word_list_by_list_name', (req, res) => {
     console.log("get_word_list_by_list_name")
     console.log(req.body)
@@ -129,6 +189,7 @@ app.post('/get_word_list_by_list_name', (req, res) => {
                 })
         })
 })
+
 
 // Get All Languages
 app.get('/get_all_language_names', (req, res) => {
@@ -176,7 +237,17 @@ app.post('/update_word_information_by_word_id', (req, res) => {
 
     MongoClient.connect(MONGODB_CONNECTION_STRING,
         {}
-        , function (err, db) {
+        , async function (err, db) {
+
+            let num = 0;
+            db.collection(wordlist_name).find({ id: word_id })
+                .toArray(function (err, docs) {
+                    if (!docs.length()) {
+                        console.log('not long enough')
+
+                    }
+                })
+
             if (err) throw err;
             var dbo = db.db("vocabulary_companion");
             dbo.collection(wordlist_name)
@@ -189,6 +260,7 @@ app.post('/update_word_information_by_word_id', (req, res) => {
                     res.send('Successfully updated')
                     res.end()
                 })
+
         })
 
 })
@@ -196,7 +268,7 @@ app.post('/update_word_information_by_word_id', (req, res) => {
 app.post('/fetch_user_study_record_by_email', (req, res) => {
     console.log('fetch_user_study_record_by_email');
     console.log(req.body);
-    user_email = req.body.user_email;
+    let user_email = req.body.user_email;
     MongoClient.connect(MONGODB_CONNECTION_STRING,
         {}
         , function (err, db) {
@@ -218,7 +290,7 @@ app.post('/fetch_user_study_record_by_email', (req, res) => {
 app.post('/update_user_study_record_by_email', (req, res) => {
     console.log('update_user_study_record_by_email');
     console.log(req.body);
-    user_email = req.body.user_email;
+    let user_email = req.body.user_email;
     MongoClient.connect(MONGODB_CONNECTION_STRING,
         {}
         , function (err, db) {

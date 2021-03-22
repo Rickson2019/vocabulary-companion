@@ -5,7 +5,8 @@ import {
     GET_WORD_LIST_BY_NAME,
     UPDATE_WORD_INFO,
     MOUNT_UNIT_NAME,
-    LOAD_ALL_LANGUAGE_NAMES
+    LOAD_ALL_LANGUAGE_NAMES,
+    LOAD_ALL_UNITS_BY_LANGUAGE_NAME
 } from './types'
 
 
@@ -47,5 +48,30 @@ export const loadAllLanguageNames = () => dispatch => {
         .catch(function (error) {
             console.log(error);
         });
+}
 
+
+// 加载数据库中所有已有该语言的单元
+export const loadAllUnitNamesByLanguageName = (language) => dispatch => {
+
+    console.log('inside of loadAllUnitNamesByLanguageName')
+    console.log(LOAD_ALL_UNITS_BY_LANGUAGE_NAME)
+
+    axios.post(`${process.env.REACT_APP_EXPRESS_ENDPOINT}/get_word_lists_by_language_name`, { language: language })
+        .then((response) => {
+            console.log(response.data);
+            let all_units = response.data
+
+            console.log('all_units_of' + language)
+            console.log(all_units)
+
+            dispatch({
+                type: LOAD_ALL_UNITS_BY_LANGUAGE_NAME,
+                payload: all_units,
+            })
+
+        })
+        .catch(function (error) {
+            console.log(error);
+        });
 }

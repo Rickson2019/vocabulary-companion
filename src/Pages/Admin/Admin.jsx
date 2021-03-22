@@ -636,7 +636,6 @@ function mapStateToProps(state, ownProps) {
         mounted_unit_obj: state.profile.mounted_unit_obj,
         mounted_unit_name: state.profile.mounted_unit_obj
     }
-
 }
 
 export default connect(mapStateToProps, {

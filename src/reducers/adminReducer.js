@@ -3,7 +3,8 @@ import axios from "axios";
 
 // TODO: types
 import {
-    LOAD_ALL_LANGUAGE_NAMES
+    LOAD_ALL_LANGUAGE_NAMES,
+    LOAD_ALL_UNITS_BY_LANGUAGE_NAME
 } from '../actions/types'
 
 
@@ -27,6 +28,14 @@ export default function (state = initialState, action) {
             }
 
 
+        }
+        // 全部的Units
+        case LOAD_ALL_UNITS_BY_LANGUAGE_NAME: {
+            console.log(LOAD_ALL_UNITS_BY_LANGUAGE_NAME);
+            return {
+                ...state,
+                wordlists_in_the_language: action.payload
+            }
         }
 
         default:

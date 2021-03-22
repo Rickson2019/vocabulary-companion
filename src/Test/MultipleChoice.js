@@ -14,7 +14,6 @@ import {
 // Destructuring the admin_input_types
 const {
     word_id,
-
     language_example_sentence,
     english_example_sentence,
     chinese_example_sentence,

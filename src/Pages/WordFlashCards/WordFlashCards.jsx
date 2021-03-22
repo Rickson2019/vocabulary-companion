@@ -1,3 +1,32 @@
+//TODOs:
+
+/**
+ *  TODO:
+ * 
+ *  1. lazy initialization:
+ *      download / load 20 words at a time, puts into an array
+ *  TODO:
+ * 
+ *  2. Record:
+ *      - record which words have been studied using hashmap
+ *        {
+ *          kinder : true,
+ *          kaiser : false,   
+ *        } 
+ * 
+ *      - record which words to render:
+ *        loop through the arrays and see if they have been loaded.
+ *        If not loaded, the target will be added into the array
+ *        if loaded, the target will not be added to the array
+ *        We can achieve this by adding fields(keys) to deal with it.
+ *      
+ *  3. Random Pictures:
+ *      - if there are no fields in the DB specifying which pictures to plug out for confusion
+ *        they will go to the pool and randomly select a word
+ *      
+ *  4. 
+ */
+
 // 导入React 相关的一些Component以及functions
 import React, { Fragment, useEffect, useState } from 'react'
 
